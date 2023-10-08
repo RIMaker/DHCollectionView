@@ -54,9 +54,8 @@ public class DHCollectionView: UIView  {
         return lbl
     }()
     
-    private var cellModels: [DHSectionWrapper: [DHCellModel]] = [:]
     private var sections: [DHSectionWrapper] = []
-    private var supplementaryElementsModels: [DHSectionWrapper: DHSupplementaryElementsModel] = [:]
+    private var sectionsData: [DHSectionWrapper: DHSectionData] = [:]
     private var cellRegisterIds: Set<String> = []
     private var supplementaryElementRegisterIds: Set<String> = []
     
@@ -66,14 +65,9 @@ public class DHCollectionView: UIView  {
         setUpContent()
     }
     
-    func display(
-        cellModels: [DHSectionWrapper: [DHCellModel]],
-        sections: [DHSectionWrapper],
-        supplementaryElementsModels: [DHSectionWrapper: DHSupplementaryElementsModel]
-    ) {
-        self.cellModels = cellModels
-        self.sections = sections
-        self.supplementaryElementsModels = supplementaryElementsModels
+    func display(withSectionsData sectionsData: [DHSectionWrapper: DHSectionData]) {
+        self.sectionsData = sectionsData
+        self.sections = sectionsData.keys.sorted(by: { $0.section.id < $1.section.id })
         self.collectionView.reloadData()
     }
     
@@ -252,14 +246,14 @@ public class DHCollectionView: UIView  {
         let footerHeaderSize = item.layoutSize
         
         var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
-        if let _ = self.supplementaryElementsModels[section]?.header {
+        if let _ = self.sectionsData[section]?.supplementaryElementModels.header {
             supplementaryItems.append(NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: footerHeaderSize,
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top)
             )
         }
-        if let _ = self.supplementaryElementsModels[section]?.footer {
+        if let _ = self.sectionsData[section]?.supplementaryElementModels.footer {
             supplementaryItems.append(NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: footerHeaderSize,
                 elementKind: UICollectionView.elementKindSectionFooter,
@@ -318,7 +312,7 @@ public class DHCollectionView: UIView  {
         let section = sections[indexPath.section]
         
         guard
-            let dhCellModels = self.cellModels[section],
+            let dhCellModels = self.sectionsData[section]?.cellModels,
             indexPath.item < dhCellModels.count
         else {
             return nil
@@ -336,7 +330,7 @@ public class DHCollectionView: UIView  {
         let section = sections[indexPath.section]
         
         guard
-            let supplementaryElementsModel = self.supplementaryElementsModels[section]
+            let supplementaryElementsModel = self.sectionsData[section]?.supplementaryElementModels
         else {
             return nil
         }
@@ -375,7 +369,7 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
         
         let dhSection = sections[section]
         
-        guard let dhCellModels = cellModels[dhSection] else { return 0 }
+        guard let dhCellModels = self.sectionsData[dhSection]?.cellModels else { return 0 }
         
         return dhCellModels.count
     }
