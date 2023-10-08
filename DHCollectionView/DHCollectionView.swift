@@ -69,11 +69,11 @@ public class DHCollectionView: UIView  {
     func display(
         cellModels: [DHSectionWrapper: [DHCellModel]],
         sections: [DHSectionWrapper],
-        supplementaryElementModels: [DHSectionWrapper: DHSupplementaryElementsModel]
+        supplementaryElementsModels: [DHSectionWrapper: DHSupplementaryElementsModel]
     ) {
         self.cellModels = cellModels
         self.sections = sections
-        self.supplementaryElementsModels = supplementaryElementModels
+        self.supplementaryElementsModels = supplementaryElementsModels
         self.collectionView.reloadData()
     }
     
@@ -278,7 +278,7 @@ public class DHCollectionView: UIView  {
         
         guard
             let dhCellModels = self.cellModels[section],
-            indexPath.item < cellModels.count
+            indexPath.item < dhCellModels.count
         else {
             return nil
         }

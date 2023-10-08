@@ -27,6 +27,8 @@ extension DHSupplementaryElementModelContract {
 }
 
 public struct DHSupplementaryElementsModel {
+    static let noModel: DHSupplementaryElementsModel = DHSupplementaryElementsModel(header: nil, footer: nil)
+    
     let header: DHHeaderModel?
     let footer: DHFooterModel?
 }
