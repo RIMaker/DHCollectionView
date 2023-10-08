@@ -182,8 +182,7 @@ public class DHCollectionView: UIView  {
             case .horizontal(_):
                 group = .vertical(
                     layoutSize: groupSize,
-                    subitem: item,
-                    count: mySection.columns
+                    subitems: (0..<mySection.columns).map{_ in item}
                 )
             case .vertical:
                 group = .horizontal(
