@@ -156,75 +156,117 @@ public class DHCollectionView: UIView  {
             let mySection = self.sections[sectionIndex]
             let scrollDirection = mySection.scrollDirection
             
-            let widthDimension: NSCollectionLayoutDimension
-            let heightDimension: NSCollectionLayoutDimension = .estimated(40)
+            let item = self.setupItem(forSection: mySection)
             
-            switch scrollDirection {
-            case .vertical:
-                widthDimension = .fractionalWidth(1.0)
-            case .horizontal(let enableDynamicWidth):
-                widthDimension = enableDynamicWidth ? .estimated(40): .fractionalWidth(1.0)
-            }
+            let group = self.setupGroup(forSection: mySection, withItem: item)
             
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: widthDimension,
-                heightDimension: heightDimension
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: widthDimension,
-                heightDimension: heightDimension
-            )
-            
-            let group: NSCollectionLayoutGroup
-            switch scrollDirection {
-            case .horizontal(_):
-                group = .vertical(
-                    layoutSize: groupSize,
-                    subitems: (0..<mySection.columns).map{_ in item}
-                )
-            case .vertical:
-                group = .horizontal(
-                    layoutSize: groupSize,
-                    subitem: item,
-                    count: mySection.columns
-                )
-            }
-            
-            group.interItemSpacing = .fixed(mySection.spacing)
-            
-            let footerHeaderSize = NSCollectionLayoutSize(
-                widthDimension: widthDimension,
-                heightDimension: heightDimension
-            )
-            var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
-            if let _ = self.supplementaryElementsModels[mySection]?.header {
-                supplementaryItems.append(NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: footerHeaderSize,
-                    elementKind: UICollectionView.elementKindSectionHeader,
-                    alignment: .top)
-                )
-            }
-            if let _ = self.supplementaryElementsModels[mySection]?.footer {
-                supplementaryItems.append(NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: footerHeaderSize,
-                    elementKind: UICollectionView.elementKindSectionFooter,
-                    alignment: .bottom)
-                )
-            }
+            let supplementaryItems = self.setupSupplementaryItems(forSection: mySection, withItem: item)
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = supplementaryItems
             section.interGroupSpacing = mySection.spacing
             section.contentInsets = mySection.sectionInsets.getInsets()
-            if case .horizontal(_) = scrollDirection {
-                section.orthogonalScrollingBehavior = .continuous
+            if case .horizontal(let enableDynamicWidth,_) = scrollDirection {
+                section.orthogonalScrollingBehavior = enableDynamicWidth ? .continuous: .continuousGroupLeadingBoundary
             }
+            
             return section
         }
         
         return layout
+    }
+    
+    private func setupItem(forSection section: DHSectionWrapper) -> NSCollectionLayoutItem {
+        
+        let scrollDirection = section.scrollDirection
+        let widthDimension: NSCollectionLayoutDimension
+        let heightDimension: NSCollectionLayoutDimension = .estimated(40)
+        
+        switch scrollDirection {
+        case .vertical(let align):
+            switch align {
+            case .center:
+                widthDimension = .fractionalWidth(1.0)
+            case .left:
+                widthDimension = .estimated(40)
+            }
+        case .horizontal(let enableDynamicWidth, _):
+            widthDimension = enableDynamicWidth ? .estimated(40): .fractionalWidth(1.0)
+        }
+        
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: widthDimension,
+            heightDimension: heightDimension
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        return item
+    }
+    
+    private func setupGroup(forSection section: DHSectionWrapper, withItem item: NSCollectionLayoutItem) -> NSCollectionLayoutGroup {
+        let scrollDirection = section.scrollDirection
+        let widthDimension: NSCollectionLayoutDimension
+        let heightDimension: NSCollectionLayoutDimension = .estimated(40)
+        
+        switch scrollDirection {
+        case .vertical(_):
+            widthDimension = .fractionalWidth(1.0)
+        case .horizontal(let enableDynamicWidth, _):
+            widthDimension = enableDynamicWidth ? .estimated(40): .fractionalWidth(1.0)
+        }
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: widthDimension,
+            heightDimension: heightDimension
+        )
+        
+        let group: NSCollectionLayoutGroup
+        switch scrollDirection {
+        case .horizontal(_, let columns):
+            group = .vertical(
+                layoutSize: groupSize,
+                subitems: (0..<columns).map{_ in item}
+            )
+        case .vertical(let align):
+            switch align {
+            case .center(let columns):
+                group = .horizontal(
+                    layoutSize: groupSize,
+                    subitem: item,
+                    count: columns
+                )
+            case .left:
+                group = .horizontal(
+                    layoutSize: groupSize,
+                    subitems: [item]
+                )
+            }
+        }
+        
+        group.interItemSpacing = .fixed(section.spacing)
+        
+        return group
+    }
+    
+    private func setupSupplementaryItems(forSection section: DHSectionWrapper, withItem item: NSCollectionLayoutItem) -> [NSCollectionLayoutBoundarySupplementaryItem] {
+        
+        let footerHeaderSize = item.layoutSize
+        
+        var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
+        if let _ = self.supplementaryElementsModels[section]?.header {
+            supplementaryItems.append(NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: footerHeaderSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+            )
+        }
+        if let _ = self.supplementaryElementsModels[section]?.footer {
+            supplementaryItems.append(NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: footerHeaderSize,
+                elementKind: UICollectionView.elementKindSectionFooter,
+                alignment: .bottom)
+            )
+        }
+        return supplementaryItems
     }
     
     private func endRefreshing() {
@@ -430,3 +472,4 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
         didScroll?(scrollView)
     }
 }
+

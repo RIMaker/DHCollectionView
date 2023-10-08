@@ -13,15 +13,18 @@ public struct DHSection: Hashable {
 
 public struct DHSectionWrapper: Hashable {
     enum ScrollDirection: Hashable {
-        case vertical
-        case horizontal(enableDynamicWidth: Bool)
+        enum Align: Hashable {
+            case left
+            case center(columns: Int)
+        }
+        case vertical(align: Align)
+        case horizontal(enableDynamicWidth: Bool, columns: Int)
     }
     
     let section: DHSection
     let sectionInsets: DHSectionInsets
     let scrollDirection: ScrollDirection
     let spacing: CGFloat
-    let columns: Int
     let hasScalingEffectOnSelect: Bool
     
     public func hash(into hasher: inout Hasher) {
@@ -29,7 +32,6 @@ public struct DHSectionWrapper: Hashable {
         hasher.combine(sectionInsets)
         hasher.combine(scrollDirection)
         hasher.combine(spacing)
-        hasher.combine(columns)
         hasher.combine(hasScalingEffectOnSelect)
     }
     
@@ -39,7 +41,6 @@ public struct DHSectionWrapper: Hashable {
             lhs.sectionInsets == rhs.sectionInsets &&
             lhs.scrollDirection == rhs.scrollDirection &&
             lhs.spacing == rhs.spacing &&
-            lhs.columns == rhs.columns &&
             lhs.hasScalingEffectOnSelect == rhs.hasScalingEffectOnSelect
         )
     }
