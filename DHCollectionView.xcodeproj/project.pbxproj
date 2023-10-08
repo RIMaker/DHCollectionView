@@ -11,6 +11,14 @@
 		7C1D27532AD2DD1200D0A188 /* DHCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1D27482AD2DD1100D0A188 /* DHCollectionView.framework */; };
 		7C1D27582AD2DD1200D0A188 /* DHCollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27572AD2DD1200D0A188 /* DHCollectionViewTests.swift */; };
 		7C1D27592AD2DD1200D0A188 /* DHCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C1D274B2AD2DD1100D0A188 /* DHCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C1D27632AD2E18600D0A188 /* DHCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27622AD2E18600D0A188 /* DHCollectionView.swift */; };
+		7C1D27662AD2E22000D0A188 /* DHCellInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27652AD2E22000D0A188 /* DHCellInput.swift */; };
+		7C1D27682AD2E24900D0A188 /* DHCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27672AD2E24900D0A188 /* DHCellModel.swift */; };
+		7C1D276B2AD2E2B800D0A188 /* DHSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D276A2AD2E2B800D0A188 /* DHSection.swift */; };
+		7C1D27702AD2E35700D0A188 /* DHSupplementaryElementInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D276F2AD2E35700D0A188 /* DHSupplementaryElementInput.swift */; };
+		7C1D27722AD2E37100D0A188 /* DHSupplementaryElementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27712AD2E37100D0A188 /* DHSupplementaryElementModel.swift */; };
+		7C1D27742AD2E6F600D0A188 /* DHSectionInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27732AD2E6F600D0A188 /* DHSectionInsets.swift */; };
+		7C1D27772AD2E97100D0A188 /* UIView + makeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27762AD2E97100D0A188 /* UIView + makeScale.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +37,14 @@
 		7C1D274C2AD2DD1100D0A188 /* DHCollectionView.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DHCollectionView.docc; sourceTree = "<group>"; };
 		7C1D27522AD2DD1200D0A188 /* DHCollectionViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DHCollectionViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C1D27572AD2DD1200D0A188 /* DHCollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHCollectionViewTests.swift; sourceTree = "<group>"; };
+		7C1D27622AD2E18600D0A188 /* DHCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHCollectionView.swift; sourceTree = "<group>"; };
+		7C1D27652AD2E22000D0A188 /* DHCellInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHCellInput.swift; sourceTree = "<group>"; };
+		7C1D27672AD2E24900D0A188 /* DHCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHCellModel.swift; sourceTree = "<group>"; };
+		7C1D276A2AD2E2B800D0A188 /* DHSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHSection.swift; sourceTree = "<group>"; };
+		7C1D276F2AD2E35700D0A188 /* DHSupplementaryElementInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHSupplementaryElementInput.swift; sourceTree = "<group>"; };
+		7C1D27712AD2E37100D0A188 /* DHSupplementaryElementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHSupplementaryElementModel.swift; sourceTree = "<group>"; };
+		7C1D27732AD2E6F600D0A188 /* DHSectionInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHSectionInsets.swift; sourceTree = "<group>"; };
+		7C1D27762AD2E97100D0A188 /* UIView + makeScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + makeScale.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +87,13 @@
 		7C1D274A2AD2DD1100D0A188 /* DHCollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				7C1D274B2AD2DD1100D0A188 /* DHCollectionView.h */,
 				7C1D274C2AD2DD1100D0A188 /* DHCollectionView.docc */,
+				7C1D274B2AD2DD1100D0A188 /* DHCollectionView.h */,
+				7C1D27622AD2E18600D0A188 /* DHCollectionView.swift */,
+				7C1D27752AD2E92300D0A188 /* Extensions */,
+				7C1D27642AD2E1FF00D0A188 /* Cell */,
+				7C1D276E2AD2E33800D0A188 /* SupplementaryElement */,
+				7C1D27692AD2E2A500D0A188 /* Section */,
 			);
 			path = DHCollectionView;
 			sourceTree = "<group>";
@@ -83,6 +104,41 @@
 				7C1D27572AD2DD1200D0A188 /* DHCollectionViewTests.swift */,
 			);
 			path = DHCollectionViewTests;
+			sourceTree = "<group>";
+		};
+		7C1D27642AD2E1FF00D0A188 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				7C1D27652AD2E22000D0A188 /* DHCellInput.swift */,
+				7C1D27672AD2E24900D0A188 /* DHCellModel.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		7C1D27692AD2E2A500D0A188 /* Section */ = {
+			isa = PBXGroup;
+			children = (
+				7C1D276A2AD2E2B800D0A188 /* DHSection.swift */,
+				7C1D27732AD2E6F600D0A188 /* DHSectionInsets.swift */,
+			);
+			path = Section;
+			sourceTree = "<group>";
+		};
+		7C1D276E2AD2E33800D0A188 /* SupplementaryElement */ = {
+			isa = PBXGroup;
+			children = (
+				7C1D276F2AD2E35700D0A188 /* DHSupplementaryElementInput.swift */,
+				7C1D27712AD2E37100D0A188 /* DHSupplementaryElementModel.swift */,
+			);
+			path = SupplementaryElement;
+			sourceTree = "<group>";
+		};
+		7C1D27752AD2E92300D0A188 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7C1D27762AD2E97100D0A188 /* UIView + makeScale.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +250,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C1D27662AD2E22000D0A188 /* DHCellInput.swift in Sources */,
+				7C1D27722AD2E37100D0A188 /* DHSupplementaryElementModel.swift in Sources */,
+				7C1D27632AD2E18600D0A188 /* DHCollectionView.swift in Sources */,
+				7C1D27702AD2E35700D0A188 /* DHSupplementaryElementInput.swift in Sources */,
+				7C1D27742AD2E6F600D0A188 /* DHSectionInsets.swift in Sources */,
+				7C1D276B2AD2E2B800D0A188 /* DHSection.swift in Sources */,
+				7C1D27682AD2E24900D0A188 /* DHCellModel.swift in Sources */,
+				7C1D27772AD2E97100D0A188 /* UIView + makeScale.swift in Sources */,
 				7C1D274D2AD2DD1100D0A188 /* DHCollectionView.docc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,7 +332,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -325,7 +389,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -350,6 +414,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -378,6 +443,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -396,6 +462,7 @@
 		7C1D27602AD2DD1200D0A188 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MYR4RY57UC;
@@ -412,6 +479,7 @@
 		7C1D27612AD2DD1200D0A188 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MYR4RY57UC;
