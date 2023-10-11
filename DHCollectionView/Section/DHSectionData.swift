@@ -8,6 +8,6 @@
 import Foundation
 
 public struct DHSectionData {
-    let cellModels: [DHCellModel]
-    let supplementaryElementModels: DHSupplementaryElementsModel
+    public let cellModels: [DHCellModel]
+    public let supplementaryElementModels: DHSupplementaryElementsModel
 }

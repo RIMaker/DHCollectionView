@@ -7,13 +7,9 @@
 
 import UIKit
 
-public struct DHSection: Hashable {
-    let id: Int
-}
-
 public struct DHSectionWrapper: Hashable {
-    enum ScrollDirection: Hashable {
-        enum Align: Hashable {
+    public enum ScrollDirection: Hashable {
+        public enum Align: Hashable {
             case left
             case center(columns: Int)
         }
@@ -21,14 +17,14 @@ public struct DHSectionWrapper: Hashable {
         case horizontal(enableDynamicWidth: Bool, columns: Int)
     }
     
-    let section: DHSection
-    let sectionInsets: DHSectionInsets
-    let scrollDirection: ScrollDirection
-    let spacing: CGFloat
-    let hasScalingEffectOnSelect: Bool
+    public let sectionId: Int
+    public let sectionInsets: DHSectionInsets
+    public let scrollDirection: ScrollDirection
+    public let spacing: CGFloat
+    public let hasScalingEffectOnSelect: Bool
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(section)
+        hasher.combine(sectionId)
         hasher.combine(sectionInsets)
         hasher.combine(scrollDirection)
         hasher.combine(spacing)
@@ -37,7 +33,7 @@ public struct DHSectionWrapper: Hashable {
     
     public static func == (lhs: DHSectionWrapper, rhs: DHSectionWrapper) -> Bool {
         return (
-            lhs.section == rhs.section &&
+            lhs.sectionId == rhs.sectionId &&
             lhs.sectionInsets == rhs.sectionInsets &&
             lhs.scrollDirection == rhs.scrollDirection &&
             lhs.spacing == rhs.spacing &&

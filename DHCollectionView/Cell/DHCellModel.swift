@@ -11,13 +11,13 @@ public typealias DHCell = UICollectionViewCell & DHCellInput
 
 public struct DHCellModel {
     
-    let data: DHCellModelData?
-    let cellType: DHCell.Type
-    var id: String {
+    public let data: DHCellModelData?
+    public let cellType: DHCell.Type
+    public var id: String {
         return String(describing: cellType)
     }
     
-    init(
+    public init(
         data: DHCellModelData?,
         cellType: DHCell.Type
     ) {

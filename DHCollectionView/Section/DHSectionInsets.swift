@@ -8,21 +8,21 @@
 import UIKit
 
 public struct DHSectionInsets: Hashable {
-    static let zero: DHSectionInsets = DHSectionInsets()
+    public static let zero: DHSectionInsets = DHSectionInsets()
     
     private var top: CGFloat
     private var left: CGFloat
     private var bottom: CGFloat
     private var right: CGFloat
     
-    init(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) {
+    public init(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) {
         self.top = top
         self.left = left
         self.bottom = bottom
         self.right = right
     }
     
-    func getInsets() -> NSDirectionalEdgeInsets {
+    public func getInsets() -> NSDirectionalEdgeInsets {
         return NSDirectionalEdgeInsets(top: top, leading: left, bottom: bottom, trailing: right)
     }
 }

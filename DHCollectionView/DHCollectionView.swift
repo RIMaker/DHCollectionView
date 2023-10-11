@@ -9,34 +9,34 @@ import UIKit
 
 public class DHCollectionView: UIView  {
     
-    var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: IndexPath) -> ())?
-    var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
-    var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
-    var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
-    var didScroll: ((_ scrollView: UIScrollView) -> ())?
-    var supplementaryViewHandler: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind) -> ())?
-    var cellHandler: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
-    var onTopRefresh: (() -> ())? {
+    public var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: IndexPath) -> ())?
+    public var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
+    public var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
+    public var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
+    public var didScroll: ((_ scrollView: UIScrollView) -> ())?
+    public var supplementaryViewHandler: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind) -> ())?
+    public var cellHandler: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
+    public var onTopRefresh: (() -> ())? {
         didSet {
             addRefreshControl()
         }
     }
     
-    lazy var collectionView: UICollectionView = {
+    public lazy var collectionView: UICollectionView = {
         let collView = setupCollectionView()
         return collView
     }()
     
-    lazy var refreshControl = UIRefreshControl()
+    public lazy var refreshControl = UIRefreshControl()
     
-    lazy var placeholderView: UIView = {
+    public lazy var placeholderView: UIView = {
         let view = UIView()
         view.isHidden = true
         view.backgroundColor = .white
         return view
     }()
     
-    lazy var placeholderImageView: UIImageView = {
+    public lazy var placeholderImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .white
         view.contentMode = .scaleAspectFit
@@ -44,7 +44,7 @@ public class DHCollectionView: UIView  {
         return view
     }()
     
-    lazy var placeholderLabel: UILabel = {
+    public lazy var placeholderLabel: UILabel = {
         let lbl = UILabel()
         lbl.textColor = .black
         lbl.textAlignment = .center
@@ -65,24 +65,24 @@ public class DHCollectionView: UIView  {
         setUpContent()
     }
     
-    func display(withSectionsData sectionsData: [DHSectionWrapper: DHSectionData]) {
+    public func display(withSectionsData sectionsData: [DHSectionWrapper: DHSectionData]) {
         self.sectionsData = sectionsData
-        self.sections = sectionsData.keys.sorted(by: { $0.section.id < $1.section.id })
+        self.sections = sectionsData.keys.sorted(by: { $0.sectionId < $1.sectionId })
         self.collectionView.reloadData()
     }
     
-    func scrollToBottom() {
+    public func scrollToBottom() {
         let bottomOffset = CGPoint(x: 0, y: collectionView.contentSize.height - collectionView.bounds.height + collectionView.contentInset.bottom)
         collectionView.setContentOffset(bottomOffset, animated: true)
     }
     
-    func showPlaceholder(withImage image: UIImage?, withMessage message: String) {
+    public func showPlaceholder(withImage image: UIImage?, withMessage message: String) {
         placeholderLabel.text = message
         placeholderImageView.image = image
         placeholderView.isHidden = false
     }
     
-    func hidePlaceholder() {
+    public func hidePlaceholder() {
         placeholderView.isHidden = true
     }
     

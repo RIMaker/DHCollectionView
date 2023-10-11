@@ -27,19 +27,19 @@ extension DHSupplementaryElementModelContract {
 }
 
 public struct DHSupplementaryElementsModel {
-    static let noModel: DHSupplementaryElementsModel = DHSupplementaryElementsModel(header: nil, footer: nil)
+    public static let noModel: DHSupplementaryElementsModel = DHSupplementaryElementsModel(header: nil, footer: nil)
     
-    let header: DHHeaderModel?
-    let footer: DHFooterModel?
+    public let header: DHHeaderModel?
+    public let footer: DHFooterModel?
 }
 
 public struct DHHeaderModel: DHSupplementaryElementModelContract {
     
-    var data: DHSupplementaryElementModelData?
-    var viewType: DHSupplementaryElement.Type
-    var kind: DHSupplementaryElementKind
+    public var data: DHSupplementaryElementModelData?
+    public var viewType: DHSupplementaryElement.Type
+    public var kind: DHSupplementaryElementKind
     
-    init(
+    public init(
         data: DHSupplementaryElementModelData?,
         viewType: DHSupplementaryElement.Type
     ) {
@@ -52,11 +52,11 @@ public struct DHHeaderModel: DHSupplementaryElementModelContract {
 
 public struct DHFooterModel: DHSupplementaryElementModelContract {
     
-    var data: DHSupplementaryElementModelData?
-    var viewType: DHSupplementaryElement.Type
-    var kind: DHSupplementaryElementKind
+    public var data: DHSupplementaryElementModelData?
+    public var viewType: DHSupplementaryElement.Type
+    public var kind: DHSupplementaryElementKind
     
-    init(
+    public init(
         data: DHSupplementaryElementModelData?,
         viewType: DHSupplementaryElement.Type
     ) {
