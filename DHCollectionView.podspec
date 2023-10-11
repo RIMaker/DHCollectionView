@@ -6,10 +6,10 @@ Pod::Spec.new do |spec|
   spec.description  = "This framework makes UICollectionView easy to use. It allows to make vertical/horizontal UICollectionView sections with cell's dynamic size simply."
 
   spec.homepage     = "https://github.com/RIMaker/DHCollectionView"
-  spec.license      = "MIT"
+  spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author       = { "Zhora Agadzhanyan" => "zhoraagadzhanyan@gmail.com" }
   spec.platform     = :ios, "13.1"
-  spec.source       = { :git => "https://github.com/RIMaker/DHCollectionView.git", :tag => spec.version.to_s }
-  spec.source_files  = "DHCollectionView/**/*"
+  spec.source       = { :git => "https://github.com/RIMaker/DHCollectionView.git", :tag => spec.version }
+  spec.source_files  = "DHCollectionView/**/*.swift"
   spec.swift_versions = "5.0"
 end
