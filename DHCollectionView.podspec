@@ -9,6 +9,6 @@ Pod::Spec.new do |spec|
   spec.author             = { "Zhora Agadzhanyan" => "zhoraagadzhanyan@gmail.com" }
   spec.platform     = :ios, "13.1"
   spec.source       = { :git => "https://github.com/RIMaker/DHCollectionView.git", :tag => spec.version.to_s }
-  spec.source_files  = "DHCollectionView/**/*.{swift}"
+  spec.source_files  = "DHCollectionView/**/*"
   spec.swift_versions = "5.0"
 end
