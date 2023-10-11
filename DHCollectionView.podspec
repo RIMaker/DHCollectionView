@@ -3,6 +3,9 @@ Pod::Spec.new do |spec|
   spec.name         = "DHCollectionView"
   spec.version      = "1.0.0"
   spec.summary      = "UICollectionView with simple usage for cell's dynamic size"
+  s.description      = <<-DESC
+                    This framework makes UICollectionView easy to use.
+                        DESC
 
   spec.homepage     = "https://github.com/RIMaker/DHCollectionView"
   spec.license      = "MIT"
