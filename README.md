@@ -3,7 +3,8 @@
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/badge/Swift-13.0-red">
+<img src="https://img.shields.io/badge/Swift-5.0-red">
+<img src="https://img.shields.io/badge/iOS-13.0-blue">
 <a href="https://github.com/RIMaker/DHCollectionView/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-black"></a>
 </p>
 
