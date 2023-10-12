@@ -17,6 +17,7 @@ UICollectionView with simple usage for cell's dynamic size
 - [x] Dynamic width for cells in horizontal sections (optional).
 - [x] Scaling effect on select cell.
 - [x] Columns number is settable.
+- [x] Placeholder view for empty data.
 
 ### Installation
 #### CocoaPods
@@ -35,9 +36,128 @@ end
 ```
 
 ### Usage
+- First you should create your own cell and inherit from DHCell:
+
 ```swift
 import DHCollectionView
 
-let url = URL(string: "https://example.com/image.png")
-imageView.kf.setImage(with: url)
+final class MyCell: DHCell {
+    func update(with data: DHCellModelData?) {
+        guard let data = data as? MyCellData else { return }
+        //below update your cell data
+    }
+}
 ```
+
+MyCellData looks like:
+
+```swift
+import DHCollectionView
+
+struct MyCellData: DHCellModelData {
+    //your data properties
+}
+```
+
+- Creating header/footer is equal to cell creating:
+  
+```swift
+import DHCollectionView
+
+final class MyHeader: DHSupplementaryElement {
+    func update(with data: DHSupplementaryElementModelData?) {
+        guard let data = data as? MyHeaderData else { return }
+        //below update your header data
+    }
+}
+```
+```swift
+import DHCollectionView
+
+struct MyHeaderData: DHSupplementaryElementModelData {
+    //your data properties
+}
+```
+
+- Add `DHCollectionView` to subviews of your `UIViewController`'s view.
+
+- For displaying `MyCell` and `MyHeader` on `DHCollectionView` make a section - `DHSectionWrapper`, cellModels - `[DHCellModel]` and supplementaryElementModels - `DHSupplementaryElementsModel`:
+```swift
+import DHCollectionView
+
+final class MyViewController: UIViewController {
+
+    private var dataModels: [DataModel]?
+
+    private lazy var collectionView = DHCollectionView()
+
+    override func loadView() {
+        view = collectionView
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateViews()
+    }
+
+    private func updateViews() {
+        guard let dataModels, !dataModels.isEmpty else {
+            collectionView.showPlaceholder(
+                withImage: UIImage(named: "placeholderImage"),
+                withMessage: "placeholder message"
+            )
+            return
+        }
+        collectionView.hidePlaceholder()
+
+        let cellModels = dataModels?.map {
+            DHCellModel(
+                data: MyCellData(),
+                cellType: MyCell.self
+            )
+        }
+        let headerModel = DHHeaderModel(
+            data: MyHeaderData(),
+            viewType: MyHeader.self
+        )
+        let section = DHSectionWrapper(
+            sectionId: 0,
+            sectionInsets: DHSectionInsets(top: 0, left: 16, bottom: 0, right: 16),
+            scrollDirection: .vertical(align: .center(columns: 2)),
+            spacing: 16,
+            hasScalingEffectOnSelect: true
+        )
+        let sectionData = DHSectionData(
+            cellModels: cellModels,
+            supplementaryElementModels:
+                DHSupplementaryElementsModel(
+                    header: headerModel,
+                    footer: nil
+                )
+        )
+        
+        collectionView.display(withSectionsData: [section : sectionData])
+    }
+}
+```
+
+- `NOTE: Sections will be sorted by 'sectionId' property`
+  
+- If no data show placeholder view:
+```swift
+collectionView.showPlaceholder(
+    withImage: UIImage(named: "placeholderImage"),
+    withMessage: "placeholder message"
+)
+```
+
+- If there is no need to use a header or footer:
+```swift
+let sectionData = DHSectionData(
+    cellModels: cellModels,
+    supplementaryElementModels: .noModel
+)
+```
+
+- If there are many sections make a `enum CustomSection` with `Int` RawValue and conforms to `CaseIterable`. If sections count is dynamic make your sections inside `for` loop.
