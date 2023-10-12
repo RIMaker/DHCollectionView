@@ -22,7 +22,7 @@ public struct DHSectionInsets: Hashable {
         self.right = right
     }
     
-    public func getInsets() -> NSDirectionalEdgeInsets {
+    func getInsets() -> NSDirectionalEdgeInsets {
         return NSDirectionalEdgeInsets(top: top, leading: left, bottom: bottom, trailing: right)
     }
 }

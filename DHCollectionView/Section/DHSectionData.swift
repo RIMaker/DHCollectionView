@@ -10,4 +10,12 @@ import Foundation
 public struct DHSectionData {
     public let cellModels: [DHCellModel]
     public let supplementaryElementModels: DHSupplementaryElementsModel
+    
+    public init(
+        cellModels: [DHCellModel],
+        supplementaryElementModels: DHSupplementaryElementsModel
+    ) {
+        self.cellModels = cellModels
+        self.supplementaryElementModels = supplementaryElementModels
+    }
 }
