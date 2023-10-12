@@ -17,6 +17,16 @@ public struct DHSectionWrapper: Hashable {
         case horizontal(enableDynamicWidth: Bool, columns: Int)
     }
     
+    public static func == (lhs: DHSectionWrapper, rhs: DHSectionWrapper) -> Bool {
+        return (
+            lhs.sectionId == rhs.sectionId &&
+            lhs.sectionInsets == rhs.sectionInsets &&
+            lhs.scrollDirection == rhs.scrollDirection &&
+            lhs.spacing == rhs.spacing &&
+            lhs.hasScalingEffectOnSelect == rhs.hasScalingEffectOnSelect
+        )
+    }
+    
     public let sectionId: Int
     public let sectionInsets: DHSectionInsets
     public let scrollDirection: ScrollDirection
@@ -31,14 +41,18 @@ public struct DHSectionWrapper: Hashable {
         hasher.combine(hasScalingEffectOnSelect)
     }
     
-    public static func == (lhs: DHSectionWrapper, rhs: DHSectionWrapper) -> Bool {
-        return (
-            lhs.sectionId == rhs.sectionId &&
-            lhs.sectionInsets == rhs.sectionInsets &&
-            lhs.scrollDirection == rhs.scrollDirection &&
-            lhs.spacing == rhs.spacing &&
-            lhs.hasScalingEffectOnSelect == rhs.hasScalingEffectOnSelect
-        )
+    public init(
+        sectionId: Int,
+        sectionInsets: DHSectionInsets,
+        scrollDirection: ScrollDirection,
+        spacing: CGFloat,
+        hasScalingEffectOnSelect: Bool
+    ) {
+        self.sectionId = sectionId
+        self.sectionInsets = sectionInsets
+        self.scrollDirection = scrollDirection
+        self.spacing = spacing
+        self.hasScalingEffectOnSelect = hasScalingEffectOnSelect
     }
     
 }

@@ -31,6 +31,11 @@ public struct DHSupplementaryElementsModel {
     
     public let header: DHHeaderModel?
     public let footer: DHFooterModel?
+    
+    public init(header: DHHeaderModel? = nil, footer: DHFooterModel? = nil) {
+        self.header = header
+        self.footer = footer
+    }
 }
 
 public struct DHHeaderModel: DHSupplementaryElementModelContract {
