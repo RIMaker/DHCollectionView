@@ -26,10 +26,11 @@ public struct DHSectionWrapper: Hashable {
             lhs.hasScalingEffectOnSelect == rhs.hasScalingEffectOnSelect
         )
     }
-    
+    ///sections will be sorted by this property
     public let sectionId: Int
     public let sectionInsets: DHSectionInsets
     public let scrollDirection: ScrollDirection
+    ///spacing between items of collection view
     public let spacing: CGFloat
     public let hasScalingEffectOnSelect: Bool
     

@@ -64,24 +64,24 @@ public class DHCollectionView: UIView  {
         
         setUpContent()
     }
-    
+    ///display on collection view given data (sections will be sorted by 'sectionId' property)
     public func display(withSectionsData sectionsData: [DHSectionWrapper: DHSectionData]) {
         self.sectionsData = sectionsData
         self.sections = sectionsData.keys.sorted(by: { $0.sectionId < $1.sectionId })
         self.collectionView.reloadData()
     }
-    
+    ///scroll to bottom side of collection view
     public func scrollToBottom() {
         let bottomOffset = CGPoint(x: 0, y: collectionView.contentSize.height - collectionView.bounds.height + collectionView.contentInset.bottom)
         collectionView.setContentOffset(bottomOffset, animated: true)
     }
-    
+    ///show placeholder view with custom image and message
     public func showPlaceholder(withImage image: UIImage?, withMessage message: String) {
         placeholderLabel.text = message
         placeholderImageView.image = image
         placeholderView.isHidden = false
     }
-    
+    ///show collection view
     public func hidePlaceholder() {
         placeholderView.isHidden = true
     }
