@@ -11,6 +11,7 @@ public class DHCollectionView: UIView  {
     
     public var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: IndexPath) -> ())?
     public var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
+    public var didEndDisplayingCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
     public var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
     public var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
     public var didScroll: ((_ scrollView: UIScrollView) -> ())?
@@ -22,21 +23,21 @@ public class DHCollectionView: UIView  {
         }
     }
     
-    public lazy var collectionView: UICollectionView = {
+    public private(set) lazy var collectionView: UICollectionView = {
         let collView = setupCollectionView()
         return collView
     }()
     
-    public lazy var refreshControl = UIRefreshControl()
+    public private(set) lazy var refreshControl = UIRefreshControl()
     
-    public lazy var placeholderView: UIView = {
+    public private(set) lazy var placeholderView: UIView = {
         let view = UIView()
         view.isHidden = true
         view.backgroundColor = .white
         return view
     }()
     
-    public lazy var placeholderImageView: UIImageView = {
+    public private(set) lazy var placeholderImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .white
         view.contentMode = .scaleAspectFit
@@ -44,7 +45,7 @@ public class DHCollectionView: UIView  {
         return view
     }()
     
-    public lazy var placeholderLabel: UILabel = {
+    public private(set) lazy var placeholderLabel: UILabel = {
         let lbl = UILabel()
         lbl.textColor = .black
         lbl.textAlignment = .center
@@ -380,7 +381,9 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
             return UICollectionViewCell()
         }
         let cell = cell(indexPath: indexPath, model: model)
-
+        
+        cellHandler?(cell, indexPath)
+        
         if let cell = cell as? DHCellInput {
             cell.update(with: model.data)
         }
@@ -430,6 +433,10 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
         willDisplayCellAt?(cell, indexPath)
     }
     
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        didEndDisplayingCellAt?(cell, indexPath)
+    }
+    
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         
@@ -438,6 +445,8 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
         }
         
         let supplementaryElement = supplementaryElement(indexPath: indexPath, model: model)
+        
+        supplementaryViewHandler?(supplementaryElement, model.kind)
 
         if let supplementaryElement = supplementaryElement as? DHSupplementaryElementInput {
             supplementaryElement.update(with: model.data)

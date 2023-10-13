@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "DHCollectionView"
-  spec.version      = "1.0.5"
+  spec.version      = "1.0.6"
   spec.summary      = "UICollectionView with simple usage for cell's dynamic size"
   spec.description  = "This framework makes UICollectionView easy to use. It allows to make vertical/horizontal UICollectionView sections with cell's dynamic size simply."
 
