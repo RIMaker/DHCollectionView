@@ -162,3 +162,19 @@ let sectionData = DHSectionData(
 ```
 
 - If there are many sections make a `enum CustomSection` with `Int` RawValue and conforms to `CaseIterable`. If sections count is dynamic make your sections inside `for` loop.
+
+- `DHCollectionView` properties:
+  - `var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: IndexPath) -> ())?`
+  - `var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?`
+  - `var didEndDisplayingCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?`
+  - `var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?`
+  - `var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?`
+  - `var didScroll: ((_ scrollView: UIScrollView) -> ())?`
+  - `var supplementaryViewHandler: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind) -> ())?` - to configure supplementary view.
+  - `var cellHandler: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?` - to configure cell view.
+  - `var onTopRefresh: (() -> ())?` - to add refresh control to view.
+  - `private(set) var collectionView: UICollectionView` - to configure collection view.
+  - `private(set) var refreshControl: UIRefreshControl` - to configure refresh control view.
+  - `private(set) var placeholderView: UIView` - to configure placeholder view.
+  - `private(set) var placeholderImageView: UIImageView` - to configure placeholder image view.
+  - `private(set) var placeholderLabel: UILabel ` - to configure placeholder message label view.
