@@ -106,6 +106,7 @@ final class MyViewController: UIViewController {
         guard let dataModels, !dataModels.isEmpty else {
             collectionView.showPlaceholder(
                 withImage: UIImage(named: "placeholderImage"),
+                withTitle: "placeholder title",
                 withMessage: "placeholder message"
             )
             return
@@ -149,6 +150,7 @@ final class MyViewController: UIViewController {
 ```swift
 collectionView.showPlaceholder(
     withImage: UIImage(named: "placeholderImage"),
+    withTitle: "placeholder title",
     withMessage: "placeholder message"
 )
 ```
@@ -178,3 +180,32 @@ let sectionData = DHSectionData(
   - `private(set) var placeholderView: UIView` - to configure placeholder view.
   - `private(set) var placeholderImageView: UIImageView` - to configure placeholder image view.
   - `private(set) var placeholderLabel: UILabel ` - to configure placeholder message label view.
+ 
+- `DHCollectionView` methods:
+  - `func display(withSectionsData sectionsData: [DHSectionWrapper: DHSectionData])` - display on collection view given data (sections will be sorted by `sectionId` property).
+  - `func scrollToBottom()` - scroll to bottom side of collection view.
+  - `func showPlaceholder(withImage image: UIImage?, withTitle title: String?, withMessage message: String?)` - show placeholder view with custom image, title and message.
+  - `func hidePlaceholder()` - show collection view.
+ 
+- You can customize these properties of the `DHCollectionView`:
+  - `backgroundColor`
+  - `placeholderImageViewHeight`
+  - `placeholderImageViewWidth` 
+  - `refreshControlTintColor` 
+  - `placeholderViewBackgroundColor` 
+  - `placeholderTitleLabelTextColor`
+  - `placeholderTitleLabelTextAlignment`
+  - `placeholderTitleLabelFont`
+  - `placeholderMessageLabelTextColor`
+  - `placeholderMessageLabelTextAlignment`
+  - `placeholderMessageLabelFont`
+  - `cellEstimatedSize`
+  - `supplementaryItemsEstimatedSize`
+  - `downScale` - the scale of scaling effect on select cell.
+
+- You can change them through each instance of `DHCollectionView` or via `UIAppearance` like this for example:
+```swift
+DHCollectionView.appearance().backgroundColor = .red
+DHCollectionView.appearance().placeholderImageViewHeight = 200
+DHCollectionView.appearance().placeholderImageViewWidth = 200
+```
