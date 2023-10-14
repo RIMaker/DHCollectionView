@@ -218,15 +218,27 @@ private extension DHCollectionView {
     func setUpContent() {
         addSubview(collectionView)
         collectionView.addSubview(placeholderView)
-        placeholderView.addSubview(placeholderImageView)
-        placeholderView.addSubview(placeholderTitleLabel)
-        placeholderView.addSubview(placeholderMessageLabel)
+        
+        let placeholderElements = UIStackView(arrangedSubviews: [
+            placeholderTitleLabel,
+            placeholderMessageLabel,
+            placeholderImageView
+        ])
+        placeholderElements.axis = .vertical
+        placeholderElements.distribution = .fill
+        placeholderElements.alignment = .center
+        placeholderElements.setCustomSpacing(12, after: placeholderTitleLabel)
+        placeholderElements.setCustomSpacing(48, after: placeholderMessageLabel)
+        
+        placeholderView.addSubview(placeholderElements)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
-        placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         placeholderTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
+        placeholderElements.translatesAutoresizingMaskIntoConstraints = false
         
         placeholderImageViewHeightConstraint = placeholderImageView.heightAnchor.constraint(equalToConstant: DHConstant.UI.placeholderImageViewHeight)
         placeholderImageViewWidthConstraint = placeholderImageView.widthAnchor.constraint(equalToConstant: DHConstant.UI.placeholderImageViewWidth)
@@ -242,21 +254,18 @@ private extension DHCollectionView {
             placeholderView.widthAnchor.constraint(equalTo: self.widthAnchor),
             placeholderView.heightAnchor.constraint(equalTo: self.heightAnchor),
             
-            placeholderTitleLabel.topAnchor.constraint(equalTo: placeholderView.topAnchor, constant: 32),
-            placeholderTitleLabel.leadingAnchor.constraint(equalTo: placeholderView.leadingAnchor, constant: 20),
-            placeholderTitleLabel.trailingAnchor.constraint(equalTo: placeholderView.trailingAnchor, constant: -20),
+            placeholderElements.topAnchor.constraint(equalTo: placeholderView.topAnchor, constant: 32),
+            placeholderElements.leadingAnchor.constraint(equalTo: placeholderView.leadingAnchor, constant: 20),
+            placeholderElements.trailingAnchor.constraint(equalTo: placeholderView.trailingAnchor, constant: -20),
+            placeholderElements.bottomAnchor.constraint(lessThanOrEqualTo: placeholderView.bottomAnchor, constant: -20),
             
-            placeholderMessageLabel.topAnchor.constraint(equalTo: placeholderTitleLabel.bottomAnchor, constant: 12),
-            placeholderMessageLabel.leadingAnchor.constraint(equalTo: placeholderView.leadingAnchor, constant: 20),
-            placeholderMessageLabel.trailingAnchor.constraint(equalTo: placeholderView.trailingAnchor, constant: -20),
+            placeholderTitleLabel.widthAnchor.constraint(equalTo: placeholderElements.widthAnchor),
             
-            placeholderImageView.topAnchor.constraint(equalTo: placeholderMessageLabel.bottomAnchor, constant: 48),
-            placeholderImageView.centerXAnchor.constraint(equalTo: placeholderView.centerXAnchor),
+            placeholderMessageLabel.widthAnchor.constraint(equalTo: placeholderElements.widthAnchor),
+            
             placeholderImageViewHeightConstraint,
             placeholderImageViewWidthConstraint,
-            placeholderImageView.bottomAnchor.constraint(lessThanOrEqualTo: placeholderView.bottomAnchor, constant: -10),
-            placeholderImageView.leadingAnchor.constraint(greaterThanOrEqualTo: placeholderView.leadingAnchor, constant: 20),
-            placeholderImageView.trailingAnchor.constraint(lessThanOrEqualTo: placeholderView.trailingAnchor, constant: -20)
+            placeholderImageView.widthAnchor.constraint(lessThanOrEqualTo: placeholderElements.widthAnchor)
         ])
         
     }
