@@ -20,6 +20,8 @@
 		7C1D27742AD2E6F600D0A188 /* DHSectionInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27732AD2E6F600D0A188 /* DHSectionInsets.swift */; };
 		7C1D27772AD2E97100D0A188 /* UIView + makeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1D27762AD2E97100D0A188 /* UIView + makeScale.swift */; };
 		7C3EEA9D2AD3414F00E359C6 /* DHSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3EEA9C2AD3414F00E359C6 /* DHSectionData.swift */; };
+		7CC318952ADAF978008E962E /* DHConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC318942ADAF978008E962E /* DHConstant.swift */; };
+		7CC318972ADAFA50008E962E /* DHCollectionView + appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC318962ADAFA50008E962E /* DHCollectionView + appearance.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		7C1D27732AD2E6F600D0A188 /* DHSectionInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHSectionInsets.swift; sourceTree = "<group>"; };
 		7C1D27762AD2E97100D0A188 /* UIView + makeScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + makeScale.swift"; sourceTree = "<group>"; };
 		7C3EEA9C2AD3414F00E359C6 /* DHSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHSectionData.swift; sourceTree = "<group>"; };
+		7CC318942ADAF978008E962E /* DHConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHConstant.swift; sourceTree = "<group>"; };
+		7CC318962ADAFA50008E962E /* DHCollectionView + appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DHCollectionView + appearance.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,7 @@
 				7C1D274C2AD2DD1100D0A188 /* DHCollectionView.docc */,
 				7C1D274B2AD2DD1100D0A188 /* DHCollectionView.h */,
 				7C1D27622AD2E18600D0A188 /* DHCollectionView.swift */,
+				7CC318932ADAF93F008E962E /* Helpers */,
 				7C1D27752AD2E92300D0A188 /* Extensions */,
 				7C1D27642AD2E1FF00D0A188 /* Cell */,
 				7C1D276E2AD2E33800D0A188 /* SupplementaryElement */,
@@ -140,8 +145,17 @@
 			isa = PBXGroup;
 			children = (
 				7C1D27762AD2E97100D0A188 /* UIView + makeScale.swift */,
+				7CC318962ADAFA50008E962E /* DHCollectionView + appearance.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7CC318932ADAF93F008E962E /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7CC318942ADAF978008E962E /* DHConstant.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +267,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CC318972ADAFA50008E962E /* DHCollectionView + appearance.swift in Sources */,
 				7C1D27662AD2E22000D0A188 /* DHCellInput.swift in Sources */,
 				7C3EEA9D2AD3414F00E359C6 /* DHSectionData.swift in Sources */,
 				7C1D27722AD2E37100D0A188 /* DHSupplementaryElementModel.swift in Sources */,
@@ -262,6 +277,7 @@
 				7C1D276B2AD2E2B800D0A188 /* DHSection.swift in Sources */,
 				7C1D27682AD2E24900D0A188 /* DHCellModel.swift in Sources */,
 				7C1D27772AD2E97100D0A188 /* UIView + makeScale.swift in Sources */,
+				7CC318952ADAF978008E962E /* DHConstant.swift in Sources */,
 				7C1D274D2AD2DD1100D0A188 /* DHCollectionView.docc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

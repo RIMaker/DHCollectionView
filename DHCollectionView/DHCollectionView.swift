@@ -9,6 +9,90 @@ import UIKit
 
 public class DHCollectionView: UIView  {
     
+    //MARK: Appearance
+    @objc fileprivate dynamic var collectionViewBackgroundColor = DHConstant.UI.backgroundColor {
+        willSet { collectionView.backgroundColor = newValue }
+    }
+
+    public override var backgroundColor: UIColor? {
+        get { return collectionViewBackgroundColor }
+        set { collectionViewBackgroundColor = newValue! }
+    }
+
+    @objc public dynamic var placeholderImageViewHeight = DHConstant.UI.placeholderImageViewHeight {
+        willSet {
+            placeholderImageViewHeightConstraint.constant = newValue
+            layoutIfNeeded()
+        }
+    }
+    
+    @objc public dynamic var placeholderImageViewWidth = DHConstant.UI.placeholderImageViewWidth {
+        willSet {
+            placeholderImageViewWidthConstraint.constant = newValue
+            layoutIfNeeded()
+        }
+    }
+    
+    @objc public dynamic var refreshControlTintColor = DHConstant.UI.refreshControlTintColor {
+        willSet {
+            refreshControl.tintColor = newValue
+        }
+    }
+    
+    @objc public dynamic var placeholderViewBackgroundColor = DHConstant.UI.placeholderViewBackgroundColor {
+        willSet {
+            placeholderView.backgroundColor = newValue
+        }
+    }
+    
+    @objc public dynamic var placeholderTitleLabelTextColor = DHConstant.UI.placeholderTitleLabelTextColor {
+        willSet {
+            placeholderTitleLabel.textColor = newValue
+        }
+    }
+    
+    @objc public dynamic var placeholderTitleLabelTextAlignment = DHConstant.UI.placeholderTitleLabelTextAlignment {
+        willSet {
+            placeholderTitleLabel.textAlignment = newValue
+        }
+    }
+    
+    @objc public dynamic var placeholderTitleLabelFont = DHConstant.UI.placeholderTitleLabelFont {
+        willSet {
+            placeholderTitleLabel.font = newValue
+        }
+    }
+    
+    @objc public dynamic var placeholderMessageLabelTextColor = DHConstant.UI.placeholderMessageLabelTextColor {
+        willSet {
+            placeholderTitleLabel.textColor = newValue
+        }
+    }
+    
+    @objc public dynamic var placeholderMessageLabelTextAlignment = DHConstant.UI.placeholderMessageLabelTextAlignment {
+        willSet {
+            placeholderTitleLabel.textAlignment = newValue
+        }
+    }
+    
+    @objc public dynamic var placeholderMessageLabelFont = DHConstant.UI.placeholderMessageLabelFont {
+        willSet {
+            placeholderTitleLabel.font = newValue
+        }
+    }
+    
+    @objc public dynamic var cellEstimatedSize = DHConstant.UI.cellEstimatedSize
+    
+    @objc public dynamic var supplementaryItemsEstimatedSize = DHConstant.UI.supplementaryItemsEstimatedSize
+    
+    @objc public dynamic var cellDownScale = DHConstant.Animation.downScale
+
+    
+    //MARK: Constraints
+    fileprivate var placeholderImageViewHeightConstraint: NSLayoutConstraint!
+    fileprivate var placeholderImageViewWidthConstraint: NSLayoutConstraint!
+    
+    //MARK: Handlers
     public var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: IndexPath) -> ())?
     public var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
     public var didEndDisplayingCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
@@ -23,38 +107,52 @@ public class DHCollectionView: UIView  {
         }
     }
     
+    //MARK: Views
     public private(set) lazy var collectionView: UICollectionView = {
         let collView = setupCollectionView()
         return collView
     }()
     
-    public private(set) lazy var refreshControl = UIRefreshControl()
+    public private(set) lazy var refreshControl: UIRefreshControl = {
+        let rControl = UIRefreshControl()
+        rControl.tintColor = refreshControlTintColor
+        return rControl
+    }()
     
     public private(set) lazy var placeholderView: UIView = {
         let view = UIView()
         view.isHidden = true
-        view.backgroundColor = .white
+        view.backgroundColor = placeholderViewBackgroundColor
         return view
     }()
     
     public private(set) lazy var placeholderImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .white
         view.contentMode = .scaleAspectFit
-        view.tintColor = .blue
         return view
     }()
     
-    public private(set) lazy var placeholderLabel: UILabel = {
+    public private(set) lazy var placeholderTitleLabel: UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .black
-        lbl.textAlignment = .center
+        lbl.textColor = placeholderTitleLabelTextColor
+        lbl.textAlignment = placeholderTitleLabelTextAlignment
         lbl.numberOfLines = 0
-        lbl.font = .systemFont(ofSize: 16, weight: .medium)
+        lbl.font = placeholderTitleLabelFont
         lbl.sizeToFit()
         return lbl
     }()
     
+    public private(set) lazy var placeholderMessageLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.textColor = placeholderMessageLabelTextColor
+        lbl.textAlignment = placeholderMessageLabelTextAlignment
+        lbl.numberOfLines = 0
+        lbl.font = placeholderMessageLabelFont
+        lbl.sizeToFit()
+        return lbl
+    }()
+    
+    //MARK: View models
     private var sections: [DHSectionWrapper] = []
     private var sectionsData: [DHSectionWrapper: DHSectionData] = [:]
     private var cellRegisterIds: Set<String> = []
@@ -76,9 +174,10 @@ public class DHCollectionView: UIView  {
         let bottomOffset = CGPoint(x: 0, y: collectionView.contentSize.height - collectionView.bounds.height + collectionView.contentInset.bottom)
         collectionView.setContentOffset(bottomOffset, animated: true)
     }
-    ///show placeholder view with custom image and message
-    public func showPlaceholder(withImage image: UIImage?, withMessage message: String) {
-        placeholderLabel.text = message
+    ///show placeholder view with custom image, title and message
+    public func showPlaceholder(withImage image: UIImage?, withTitle title: String?, withMessage message: String?) {
+        placeholderTitleLabel.text = title
+        placeholderMessageLabel.text = message
         placeholderImageView.image = image
         placeholderView.isHidden = false
     }
@@ -87,25 +186,50 @@ public class DHCollectionView: UIView  {
         placeholderView.isHidden = true
     }
     
-    private func addRefreshControl() {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+   
+}
+
+//MARK: - Selectors
+private extension DHCollectionView {
+    @objc func onTopRefresh(_ sender: UIRefreshControl) {
+        endRefreshing()
+        onTopRefresh?()
+    }
+}
+
+//MARK: - Setup views
+private extension DHCollectionView {
+    func addRefreshControl() {
         if collectionView.refreshControl == nil {
             collectionView.refreshControl = refreshControl
             refreshControl.addTarget(self, action: #selector(onTopRefresh(_:)), for: .valueChanged)
         }
     }
     
-    private func setUpContent() {
+    func endRefreshing() {
+        DispatchQueue.main.async { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
+    }
+    
+    func setUpContent() {
         addSubview(collectionView)
         collectionView.addSubview(placeholderView)
         placeholderView.addSubview(placeholderImageView)
-        placeholderView.addSubview(placeholderLabel)
-        backgroundColor = .white
+        placeholderView.addSubview(placeholderTitleLabel)
+        placeholderView.addSubview(placeholderMessageLabel)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
         placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
-        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeholderTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeholderMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        placeholderImageViewHeightConstraint = placeholderImageView.heightAnchor.constraint(equalToConstant: DHConstant.UI.placeholderImageViewHeight)
+        placeholderImageViewWidthConstraint = placeholderImageView.widthAnchor.constraint(equalToConstant: DHConstant.UI.placeholderImageViewWidth)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -118,23 +242,29 @@ public class DHCollectionView: UIView  {
             placeholderView.widthAnchor.constraint(equalTo: self.widthAnchor),
             placeholderView.heightAnchor.constraint(equalTo: self.heightAnchor),
             
-            placeholderImageView.centerXAnchor.constraint(equalTo: placeholderView.centerXAnchor),
-            placeholderImageView.centerYAnchor.constraint(equalTo: placeholderView.centerYAnchor),
-            placeholderImageView.widthAnchor.constraint(equalToConstant: 100),
-            placeholderImageView.heightAnchor.constraint(equalToConstant: 100),
+            placeholderTitleLabel.topAnchor.constraint(equalTo: placeholderView.topAnchor, constant: 32),
+            placeholderTitleLabel.leadingAnchor.constraint(equalTo: placeholderView.leadingAnchor, constant: 20),
+            placeholderTitleLabel.trailingAnchor.constraint(equalTo: placeholderView.trailingAnchor, constant: -20),
             
-            placeholderLabel.topAnchor.constraint(equalTo: placeholderImageView.bottomAnchor, constant: 10),
-            placeholderLabel.leadingAnchor.constraint(equalTo: placeholderView.leadingAnchor, constant: 20),
-            placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: placeholderView.bottomAnchor, constant: -10),
-            placeholderLabel.trailingAnchor.constraint(equalTo: placeholderView.trailingAnchor, constant: -20)
+            placeholderMessageLabel.topAnchor.constraint(equalTo: placeholderTitleLabel.bottomAnchor, constant: 12),
+            placeholderMessageLabel.leadingAnchor.constraint(equalTo: placeholderView.leadingAnchor, constant: 20),
+            placeholderMessageLabel.trailingAnchor.constraint(equalTo: placeholderView.trailingAnchor, constant: -20),
+            
+            placeholderImageView.topAnchor.constraint(equalTo: placeholderMessageLabel.bottomAnchor, constant: 48),
+            placeholderImageView.centerXAnchor.constraint(equalTo: placeholderView.centerXAnchor),
+            placeholderImageViewHeightConstraint,
+            placeholderImageViewWidthConstraint,
+            placeholderImageView.bottomAnchor.constraint(lessThanOrEqualTo: placeholderView.bottomAnchor, constant: -10),
+            placeholderImageView.leadingAnchor.constraint(greaterThanOrEqualTo: placeholderView.leadingAnchor, constant: 20),
+            placeholderImageView.trailingAnchor.constraint(lessThanOrEqualTo: placeholderView.trailingAnchor, constant: -20)
         ])
         
     }
     
-    private func setupCollectionView() -> UICollectionView {
+    func setupCollectionView() -> UICollectionView {
         let layout = setupCollectionViewLayout()
         let colView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        colView.backgroundColor = .white
+        colView.backgroundColor = collectionViewBackgroundColor
         colView.translatesAutoresizingMaskIntoConstraints = false
         colView.showsVerticalScrollIndicator = false
         colView.showsHorizontalScrollIndicator = false
@@ -143,7 +273,7 @@ public class DHCollectionView: UIView  {
         return colView
     }
     
-    private func setupCollectionViewLayout() -> UICollectionViewLayout {
+    func setupCollectionViewLayout() -> UICollectionViewLayout {
        
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
             guard sectionIndex < self.sections.count else { return nil }
@@ -155,7 +285,7 @@ public class DHCollectionView: UIView  {
             
             let group = self.setupGroup(forSection: mySection, withItem: item)
             
-            let supplementaryItems = self.setupSupplementaryItems(forSection: mySection, withItem: item)
+            let supplementaryItems = self.setupSupplementaryItems(forSection: mySection)
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = supplementaryItems
@@ -171,11 +301,11 @@ public class DHCollectionView: UIView  {
         return layout
     }
     
-    private func setupItem(forSection section: DHSectionWrapper) -> NSCollectionLayoutItem {
+    func setupItem(forSection section: DHSectionWrapper) -> NSCollectionLayoutItem {
         
         let scrollDirection = section.scrollDirection
         let widthDimension: NSCollectionLayoutDimension
-        let heightDimension: NSCollectionLayoutDimension = .estimated(40)
+        let heightDimension: NSCollectionLayoutDimension = .estimated(cellEstimatedSize)
         
         switch scrollDirection {
         case .vertical(let align):
@@ -183,10 +313,10 @@ public class DHCollectionView: UIView  {
             case .center:
                 widthDimension = .fractionalWidth(1.0)
             case .left:
-                widthDimension = .estimated(40)
+                widthDimension = .estimated(cellEstimatedSize)
             }
         case .horizontal(let enableDynamicWidth, _):
-            widthDimension = enableDynamicWidth ? .estimated(40): .fractionalWidth(1.0)
+            widthDimension = enableDynamicWidth ? .estimated(cellEstimatedSize): .fractionalWidth(1.0)
         }
         
         let itemSize = NSCollectionLayoutSize(
@@ -197,16 +327,16 @@ public class DHCollectionView: UIView  {
         return item
     }
     
-    private func setupGroup(forSection section: DHSectionWrapper, withItem item: NSCollectionLayoutItem) -> NSCollectionLayoutGroup {
+    func setupGroup(forSection section: DHSectionWrapper, withItem item: NSCollectionLayoutItem) -> NSCollectionLayoutGroup {
         let scrollDirection = section.scrollDirection
         let widthDimension: NSCollectionLayoutDimension
-        let heightDimension: NSCollectionLayoutDimension = .estimated(40)
+        let heightDimension: NSCollectionLayoutDimension = .estimated(cellEstimatedSize)
         
         switch scrollDirection {
         case .vertical(_):
             widthDimension = .fractionalWidth(1.0)
         case .horizontal(let enableDynamicWidth, _):
-            widthDimension = enableDynamicWidth ? .estimated(40): .fractionalWidth(1.0)
+            widthDimension = enableDynamicWidth ? .estimated(cellEstimatedSize): .fractionalWidth(1.0)
         }
         
         let groupSize = NSCollectionLayoutSize(
@@ -242,9 +372,28 @@ public class DHCollectionView: UIView  {
         return group
     }
     
-    private func setupSupplementaryItems(forSection section: DHSectionWrapper, withItem item: NSCollectionLayoutItem) -> [NSCollectionLayoutBoundarySupplementaryItem] {
+    func setupSupplementaryItems(forSection section: DHSectionWrapper) -> [NSCollectionLayoutBoundarySupplementaryItem] {
         
-        let footerHeaderSize = item.layoutSize
+        let scrollDirection = section.scrollDirection
+        let widthDimension: NSCollectionLayoutDimension
+        let heightDimension: NSCollectionLayoutDimension = .estimated(supplementaryItemsEstimatedSize)
+        
+        switch scrollDirection {
+        case .vertical(let align):
+            switch align {
+            case .center:
+                widthDimension = .fractionalWidth(1.0)
+            case .left:
+                widthDimension = .estimated(supplementaryItemsEstimatedSize)
+            }
+        case .horizontal(let enableDynamicWidth, _):
+            widthDimension = enableDynamicWidth ? .estimated(supplementaryItemsEstimatedSize): .fractionalWidth(1.0)
+        }
+        
+        let footerHeaderSize = NSCollectionLayoutSize(
+            widthDimension: widthDimension,
+            heightDimension: heightDimension
+        )
         
         var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
         if let _ = self.sectionsData[section]?.supplementaryElementModels.header {
@@ -263,14 +412,11 @@ public class DHCollectionView: UIView  {
         }
         return supplementaryItems
     }
-    
-    private func endRefreshing() {
-        DispatchQueue.main.async { [weak self] in
-            self?.refreshControl.endRefreshing()
-        }
-    }
-    
-    private func supplementaryElement(indexPath: IndexPath, model: DHSupplementaryElementModelContract) -> UICollectionReusableView {
+}
+
+//MARK: - CollectionView items configuration
+extension DHCollectionView {
+    func supplementaryElement(indexPath: IndexPath, model: DHSupplementaryElementModelContract) -> UICollectionReusableView {
         
         let kind = model.kind == .footer ? UICollectionView.elementKindSectionFooter: UICollectionView.elementKindSectionHeader
         
@@ -291,7 +437,7 @@ public class DHCollectionView: UIView  {
         )
     }
     
-    private func cell(indexPath: IndexPath, model: DHCellModel) -> UICollectionViewCell {
+    func cell(indexPath: IndexPath, model: DHCellModel) -> UICollectionViewCell {
         if !cellRegisterIds.contains(model.id) {
             cellRegisterIds.insert(model.id)
             
@@ -307,7 +453,7 @@ public class DHCollectionView: UIView  {
         )
     }
     
-    private func getCellModelAt(_ indexPath: IndexPath) -> DHCellModel? {
+    func getCellModelAt(_ indexPath: IndexPath) -> DHCellModel? {
         guard indexPath.section < sections.count else { return nil }
         
         let section = sections[indexPath.section]
@@ -324,7 +470,7 @@ public class DHCollectionView: UIView  {
         return cellModel
     }
     
-    private func getSupplementaryElementModelAt(_ indexPath: IndexPath, kind: String) -> DHSupplementaryElementModelContract? {
+    func getSupplementaryElementModelAt(_ indexPath: IndexPath, kind: String) -> DHSupplementaryElementModelContract? {
         guard indexPath.section < sections.count else { return nil }
         
         let kind: DHSupplementaryElementKind = kind == UICollectionView.elementKindSectionHeader ? .header: .footer
@@ -343,19 +489,6 @@ public class DHCollectionView: UIView  {
             return supplementaryElementsModel.footer
         }
     }
-    
-    @objc
-    private func onTopRefresh(_ sender: UIRefreshControl) {
-        endRefreshing()
-        onTopRefresh?()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-   
 }
 
 //MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -398,7 +531,7 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
         }
         let section = sections[indexPath.section]
         if let cell = collectionView.cellForItem(at: indexPath), section.hasScalingEffectOnSelect {
-            cell.makeScale(0.95, 0.95, completion: {
+            cell.makeScale(cellDownScale, cellDownScale, completion: {
                 cell.makeScale(1, 1)
             })
         }
@@ -413,7 +546,7 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
             let cell = collectionView.cellForItem(at: indexPath)
         else { return }
         
-        cell.makeScale(0.95, 0.95)
+        cell.makeScale(cellDownScale, cellDownScale)
         
     }
     
