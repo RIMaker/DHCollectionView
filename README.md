@@ -144,7 +144,7 @@ final class MyViewController: UIViewController {
 }
 ```
 
-- `NOTE: Sections will be sorted by 'sectionId' property`
+- `NOTE: Sections will be sorted by 'sectionId' property. 'sectionId' should be a unique across different sections (sections with same 'sectionId' are equal).`
   
 - If no data show placeholder view:
 ```swift
@@ -166,14 +166,14 @@ let sectionData = DHSectionData(
 - If there are many sections make a `enum CustomSection` with `Int` RawValue and conforms to `CaseIterable`. If sections count is dynamic make your sections inside `for` loop.
 
 - `DHCollectionView` properties:
-  - `var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: IndexPath) -> ())?`
-  - `var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?`
-  - `var didEndDisplayingCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?`
-  - `var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?`
-  - `var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?`
+  - `var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: DHIndexPath) -> ())?`
+  - `var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: DHIndexPath) -> ())?`
+  - `var didEndDisplayingCellAt: ((_ cell: UICollectionViewCell, _ indexPath: DHIndexPath) -> ())?`
+  - `var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: DHIndexPath) -> ())?`
+  - `var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: DHIndexPath) -> ())?`
   - `var didScroll: ((_ scrollView: UIScrollView) -> ())?`
-  - `var supplementaryViewHandler: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind) -> ())?` - to configure supplementary view.
-  - `var cellHandler: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?` - to configure cell view.
+  - `var supplementaryViewHandler: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: DHIndexPath) -> ())?` - to configure supplementary view.
+  - `var cellHandler: ((_ cell: UICollectionViewCell, _ indexPath: DHIndexPath) -> ())?` - to configure cell view.
   - `var onTopRefresh: (() -> ())?` - to add refresh control to view.
   - `private(set) var collectionView: UICollectionView` - to configure collection view.
   - `private(set) var refreshControl: UIRefreshControl` - to configure refresh control view.
