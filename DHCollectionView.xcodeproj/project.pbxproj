@@ -22,6 +22,7 @@
 		7C3EEA9D2AD3414F00E359C6 /* DHSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3EEA9C2AD3414F00E359C6 /* DHSectionData.swift */; };
 		7CC318952ADAF978008E962E /* DHConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC318942ADAF978008E962E /* DHConstant.swift */; };
 		7CC318972ADAFA50008E962E /* DHCollectionView + appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC318962ADAFA50008E962E /* DHCollectionView + appearance.swift */; };
+		7CC318D72ADC0468008E962E /* DHIndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC318D62ADC0468008E962E /* DHIndexPath.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		7C3EEA9C2AD3414F00E359C6 /* DHSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHSectionData.swift; sourceTree = "<group>"; };
 		7CC318942ADAF978008E962E /* DHConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHConstant.swift; sourceTree = "<group>"; };
 		7CC318962ADAFA50008E962E /* DHCollectionView + appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DHCollectionView + appearance.swift"; sourceTree = "<group>"; };
+		7CC318D62ADC0468008E962E /* DHIndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DHIndexPath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				7CC318942ADAF978008E962E /* DHConstant.swift */,
+				7CC318D62ADC0468008E962E /* DHIndexPath.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				7C1D27632AD2E18600D0A188 /* DHCollectionView.swift in Sources */,
 				7C1D27702AD2E35700D0A188 /* DHSupplementaryElementInput.swift in Sources */,
 				7C1D27742AD2E6F600D0A188 /* DHSectionInsets.swift in Sources */,
+				7CC318D72ADC0468008E962E /* DHIndexPath.swift in Sources */,
 				7C1D276B2AD2E2B800D0A188 /* DHSection.swift in Sources */,
 				7C1D27682AD2E24900D0A188 /* DHCellModel.swift in Sources */,
 				7C1D27772AD2E97100D0A188 /* UIView + makeScale.swift in Sources */,

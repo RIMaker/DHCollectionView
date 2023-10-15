@@ -18,13 +18,7 @@ public struct DHSectionWrapper: Hashable {
     }
     
     public static func == (lhs: DHSectionWrapper, rhs: DHSectionWrapper) -> Bool {
-        return (
-            lhs.sectionId == rhs.sectionId &&
-            lhs.sectionInsets == rhs.sectionInsets &&
-            lhs.scrollDirection == rhs.scrollDirection &&
-            lhs.spacing == rhs.spacing &&
-            lhs.hasScalingEffectOnSelect == rhs.hasScalingEffectOnSelect
-        )
+        return lhs.sectionId == rhs.sectionId
     }
     ///sections will be sorted by this property
     public let sectionId: Int
@@ -36,10 +30,6 @@ public struct DHSectionWrapper: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(sectionId)
-        hasher.combine(sectionInsets)
-        hasher.combine(scrollDirection)
-        hasher.combine(spacing)
-        hasher.combine(hasScalingEffectOnSelect)
     }
     
     public init(

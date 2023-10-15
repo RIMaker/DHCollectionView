@@ -93,14 +93,14 @@ public class DHCollectionView: UIView  {
     fileprivate var placeholderImageViewWidthConstraint: NSLayoutConstraint!
     
     //MARK: Handlers
-    public var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: IndexPath) -> ())?
-    public var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
-    public var didEndDisplayingCellAt: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
-    public var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
-    public var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: IndexPath) -> ())?
+    public var didSelectItemAt: ((_ model: DHCellModel?, _ indexPath: DHIndexPath) -> ())?
+    public var willDisplayCellAt: ((_ cell: UICollectionViewCell, _ indexPath: DHIndexPath) -> ())?
+    public var didEndDisplayingCellAt: ((_ cell: UICollectionViewCell, _ indexPath: DHIndexPath) -> ())?
+    public var willDisplaySupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: DHIndexPath) -> ())?
+    public var didEndDisplayingSupplementaryViewAt: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: DHIndexPath) -> ())?
     public var didScroll: ((_ scrollView: UIScrollView) -> ())?
-    public var supplementaryViewHandler: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind) -> ())?
-    public var cellHandler: ((_ cell: UICollectionViewCell, _ indexPath: IndexPath) -> ())?
+    public var supplementaryViewHandler: ((_ view: UICollectionReusableView, _ kind: DHSupplementaryElementKind, _ indexPath: DHIndexPath) -> ())?
+    public var cellHandler: ((_ cell: UICollectionViewCell, _ indexPath: DHIndexPath) -> ())?
     public var onTopRefresh: (() -> ())? {
         didSet {
             addRefreshControl()
@@ -519,12 +519,13 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let model = getCellModelAt(indexPath) else {
+        guard let model = getCellModelAt(indexPath), indexPath.section < sections.count else {
             return UICollectionViewCell()
         }
         let cell = cell(indexPath: indexPath, model: model)
-        
-        cellHandler?(cell, indexPath)
+        let section = sections[indexPath.section]
+        let dhIndexPath = DHIndexPath(sectionId: section.sectionId, itemIndex: indexPath.item)
+        cellHandler?(cell, dhIndexPath)
         
         if let cell = cell as? DHCellInput {
             cell.update(with: model.data)
@@ -535,7 +536,6 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let model = getCellModelAt(indexPath), indexPath.section < sections.count else {
-            didSelectItemAt?(nil, indexPath)
             return
         }
         let section = sections[indexPath.section]
@@ -544,7 +544,8 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
                 cell.makeScale(1, 1)
             })
         }
-        didSelectItemAt?(model, indexPath)
+        let dhIndexPath = DHIndexPath(sectionId: section.sectionId, itemIndex: indexPath.item)
+        didSelectItemAt?(model, dhIndexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
@@ -572,23 +573,34 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        willDisplayCellAt?(cell, indexPath)
+        guard indexPath.section < sections.count else {
+            return
+        }
+        let section = sections[indexPath.section]
+        let dhIndexPath = DHIndexPath(sectionId: section.sectionId, itemIndex: indexPath.item)
+        willDisplayCellAt?(cell, dhIndexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        didEndDisplayingCellAt?(cell, indexPath)
+        guard indexPath.section < sections.count else {
+            return
+        }
+        let section = sections[indexPath.section]
+        let dhIndexPath = DHIndexPath(sectionId: section.sectionId, itemIndex: indexPath.item)
+        didEndDisplayingCellAt?(cell, dhIndexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         
-        guard let model = getSupplementaryElementModelAt(indexPath, kind: kind) else {
+        guard let model = getSupplementaryElementModelAt(indexPath, kind: kind), indexPath.section < sections.count else {
             return UICollectionReusableView()
         }
         
         let supplementaryElement = supplementaryElement(indexPath: indexPath, model: model)
-        
-        supplementaryViewHandler?(supplementaryElement, model.kind)
+        let section = sections[indexPath.section]
+        let dhIndexPath = DHIndexPath(sectionId: section.sectionId, itemIndex: indexPath.item)
+        supplementaryViewHandler?(supplementaryElement, model.kind, dhIndexPath)
 
         if let supplementaryElement = supplementaryElement as? DHSupplementaryElementInput {
             supplementaryElement.update(with: model.data)
@@ -598,18 +610,28 @@ extension DHCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        guard indexPath.section < sections.count else {
+            return
+        }
+        let section = sections[indexPath.section]
+        let dhIndexPath = DHIndexPath(sectionId: section.sectionId, itemIndex: indexPath.item)
         if elementKind == UICollectionView.elementKindSectionHeader {
-            willDisplaySupplementaryViewAt?(view, .header, indexPath)
+            willDisplaySupplementaryViewAt?(view, .header, dhIndexPath)
         } else if elementKind == UICollectionView.elementKindSectionFooter {
-            willDisplaySupplementaryViewAt?(view, .footer, indexPath)
+            willDisplaySupplementaryViewAt?(view, .footer, dhIndexPath)
         }
     }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+        guard indexPath.section < sections.count else {
+            return
+        }
+        let section = sections[indexPath.section]
+        let dhIndexPath = DHIndexPath(sectionId: section.sectionId, itemIndex: indexPath.item)
         if elementKind == UICollectionView.elementKindSectionHeader {
-            didEndDisplayingSupplementaryViewAt?(view, .header, indexPath)
+            didEndDisplayingSupplementaryViewAt?(view, .header, dhIndexPath)
         } else if elementKind == UICollectionView.elementKindSectionFooter {
-            didEndDisplayingSupplementaryViewAt?(view, .footer, indexPath)
+            didEndDisplayingSupplementaryViewAt?(view, .footer, dhIndexPath)
         }
     }
     
