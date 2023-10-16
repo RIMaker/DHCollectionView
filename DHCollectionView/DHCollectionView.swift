@@ -65,19 +65,19 @@ public class DHCollectionView: UIView  {
     
     @objc public dynamic var placeholderMessageLabelTextColor = DHConstant.UI.placeholderMessageLabelTextColor {
         willSet {
-            placeholderTitleLabel.textColor = newValue
+            placeholderMessageLabel.textColor = newValue
         }
     }
     
     @objc public dynamic var placeholderMessageLabelTextAlignment = DHConstant.UI.placeholderMessageLabelTextAlignment {
         willSet {
-            placeholderTitleLabel.textAlignment = newValue
+            placeholderMessageLabel.textAlignment = newValue
         }
     }
     
     @objc public dynamic var placeholderMessageLabelFont = DHConstant.UI.placeholderMessageLabelFont {
         willSet {
-            placeholderTitleLabel.font = newValue
+            placeholderMessageLabel.font = newValue
         }
     }
     
