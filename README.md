@@ -111,9 +111,8 @@ final class MyViewController: UIViewController {
             )
             return
         }
-        collectionView.hidePlaceholder()
 
-        let cellModels = dataModels?.map {
+        let cellModels = dataModels.map {
             DHCellModel(
                 data: MyCellData(),
                 cellType: MyCell.self
@@ -183,9 +182,8 @@ let sectionData = DHSectionData(
  
 - `DHCollectionView` methods:
   - `func display(withSectionsData sectionsData: [DHSectionWrapper: DHSectionData])` - display on collection view given data (sections will be sorted by `sectionId` property).
-  - `func scrollToBottom()` - scroll to bottom side of collection view.
   - `func showPlaceholder(withImage image: UIImage?, withTitle title: String?, withMessage message: String?)` - show placeholder view with custom image, title and message.
-  - `func hidePlaceholder()` - show collection view.
+  - `func scrollToBottom()` - scroll to bottom side of collection view.
  
 - You can customize these properties of the `DHCollectionView`:
   - `backgroundColor`
