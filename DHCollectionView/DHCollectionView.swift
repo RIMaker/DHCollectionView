@@ -165,6 +165,7 @@ public class DHCollectionView: UIView  {
     }
     ///display on collection view given data (sections will be sorted by 'sectionId' property)
     public func display(withSectionsData sectionsData: [DHSectionWrapper: DHSectionData]) {
+        self.hidePlaceholder()
         self.sectionsData = sectionsData
         self.sections = sectionsData.keys.sorted(by: { $0.sectionId < $1.sectionId })
         self.collectionView.reloadData()
@@ -176,14 +177,11 @@ public class DHCollectionView: UIView  {
     }
     ///show placeholder view with custom image, title and message
     public func showPlaceholder(withImage image: UIImage?, withTitle title: String?, withMessage message: String?) {
+        display(withSectionsData: [:])
         placeholderTitleLabel.text = title
         placeholderMessageLabel.text = message
         placeholderImageView.image = image
         placeholderView.isHidden = false
-    }
-    ///show collection view
-    public func hidePlaceholder() {
-        placeholderView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -202,6 +200,11 @@ private extension DHCollectionView {
 
 //MARK: - Setup views
 private extension DHCollectionView {
+    
+    func hidePlaceholder() {
+        placeholderView.isHidden = true
+    }
+    
     func addRefreshControl() {
         if collectionView.refreshControl == nil {
             collectionView.refreshControl = refreshControl
