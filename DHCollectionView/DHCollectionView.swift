@@ -386,21 +386,8 @@ private extension DHCollectionView {
     
     func setupSupplementaryItems(forSection section: DHSectionWrapper) -> [NSCollectionLayoutBoundarySupplementaryItem] {
         
-        let scrollDirection = section.scrollDirection
-        let widthDimension: NSCollectionLayoutDimension
+        let widthDimension: NSCollectionLayoutDimension = .fractionalWidth(1.0)
         let heightDimension: NSCollectionLayoutDimension = .estimated(supplementaryItemsEstimatedSize)
-        
-        switch scrollDirection {
-        case .vertical(let align):
-            switch align {
-            case .center:
-                widthDimension = .fractionalWidth(1.0)
-            case .left:
-                widthDimension = .estimated(supplementaryItemsEstimatedSize)
-            }
-        case .horizontal(let enableDynamicWidth, _):
-            widthDimension = enableDynamicWidth ? .estimated(supplementaryItemsEstimatedSize): .fractionalWidth(1.0)
-        }
         
         let footerHeaderSize = NSCollectionLayoutSize(
             widthDimension: widthDimension,
