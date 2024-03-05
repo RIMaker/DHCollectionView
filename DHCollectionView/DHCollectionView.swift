@@ -169,6 +169,7 @@ public class DHCollectionView: UIView  {
         self.sectionsData = sectionsData
         self.sections = sectionsData.keys.sorted(by: { $0.sectionId < $1.sectionId })
         self.collectionView.reloadData()
+        self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
     }
     ///scroll to bottom side of collection view
     public func scrollToBottom() {
