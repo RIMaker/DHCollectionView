@@ -27,14 +27,16 @@ extension DHSupplementaryElementModelContract {
 }
 
 public struct DHSupplementaryElementsModel {
-    public static let noModel: DHSupplementaryElementsModel = DHSupplementaryElementsModel(header: nil, footer: nil)
+    public static let noModel: DHSupplementaryElementsModel = DHSupplementaryElementsModel()
     
     public let header: DHHeaderModel?
     public let footer: DHFooterModel?
+    public let backgroundView: DHBackgroundViewModel?
     
-    public init(header: DHHeaderModel? = nil, footer: DHFooterModel? = nil) {
+    public init(header: DHHeaderModel? = nil, footer: DHFooterModel? = nil, backgroundView: DHBackgroundViewModel? = nil) {
         self.header = header
         self.footer = footer
+        self.backgroundView = backgroundView
     }
 }
 
@@ -68,6 +70,24 @@ public struct DHFooterModel: DHSupplementaryElementModelContract {
         self.data = data
         self.viewType = viewType
         self.kind = .footer
+    }
+    
+}
+
+public struct DHBackgroundViewModel {
+    public var viewType: UICollectionReusableView.Type
+    public var insets: DHInsets
+    
+    public init(
+        viewType: UICollectionReusableView.Type,
+        insets: DHInsets
+    ) {
+        self.viewType = viewType
+        self.insets = insets
+    }
+    
+    func reusableId() -> String {
+        return String(describing: viewType)
     }
     
 }

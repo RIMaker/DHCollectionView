@@ -13,8 +13,12 @@ public struct DHSectionWrapper: Hashable {
             case left
             case center(columns: Int)
         }
+        public enum HorizontalDirectionWidthType: Hashable {
+            case dynamicWidth
+            case fractionalWidth(fractions: Int)
+        }
         case vertical(align: Align)
-        case horizontal(enableDynamicWidth: Bool, columns: Int)
+        case horizontal(widthType: HorizontalDirectionWidthType, columns: Int)
     }
     
     public static func == (lhs: DHSectionWrapper, rhs: DHSectionWrapper) -> Bool {
@@ -22,7 +26,7 @@ public struct DHSectionWrapper: Hashable {
     }
     ///sections will be sorted by this property
     public let sectionId: Int
-    public let sectionInsets: DHSectionInsets
+    public let sectionInsets: DHInsets
     public let scrollDirection: ScrollDirection
     ///spacing between items of collection view
     public let spacing: CGFloat
@@ -34,7 +38,7 @@ public struct DHSectionWrapper: Hashable {
     
     public init(
         sectionId: Int,
-        sectionInsets: DHSectionInsets,
+        sectionInsets: DHInsets,
         scrollDirection: ScrollDirection,
         spacing: CGFloat,
         hasScalingEffectOnSelect: Bool

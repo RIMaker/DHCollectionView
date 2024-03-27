@@ -152,6 +152,8 @@ public class DHCollectionView: UIView  {
         return lbl
     }()
     
+    private weak var layout: UICollectionViewCompositionalLayout?
+    
     //MARK: View models
     private var sections: [DHSectionWrapper] = []
     private var sectionsData: [DHSectionWrapper: DHSectionData] = [:]
@@ -168,6 +170,7 @@ public class DHCollectionView: UIView  {
         self.hidePlaceholder()
         self.sectionsData = sectionsData
         self.sections = sectionsData.keys.sorted(by: { $0.sectionId < $1.sectionId })
+        self.setUpDecorationViews()
         self.collectionView.reloadData()
         self.collectionView.setContentOffset(self.collectionView.contentOffset, animated: false)
     }
@@ -175,6 +178,10 @@ public class DHCollectionView: UIView  {
     public func scrollToBottom() {
         let bottomOffset = CGPoint(x: 0, y: collectionView.contentSize.height - collectionView.bounds.height + collectionView.contentInset.bottom)
         collectionView.setContentOffset(bottomOffset, animated: true)
+    }
+    ///scroll to top side of collection view
+    public func scrollToTop() {
+        collectionView.setContentOffset(.zero, animated: true)
     }
     ///show placeholder view with custom image, title and message
     public func showPlaceholder(withImage image: UIImage?, withTitle title: String?, withMessage message: String?) {
@@ -216,6 +223,14 @@ private extension DHCollectionView {
     func endRefreshing() {
         DispatchQueue.main.async { [weak self] in
             self?.refreshControl.endRefreshing()
+        }
+    }
+    
+    func setUpDecorationViews() {
+        sections.forEach {
+            if let bgView = self.sectionsData[$0]?.supplementaryElementModels.backgroundView {
+                layout?.register(bgView.viewType, forDecorationViewOfKind: bgView.reusableId())
+            }
         }
     }
     
@@ -287,7 +302,6 @@ private extension DHCollectionView {
     }
     
     func setupCollectionViewLayout() -> UICollectionViewLayout {
-       
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
             guard sectionIndex < self.sections.count else { return nil }
             
@@ -304,13 +318,25 @@ private extension DHCollectionView {
             section.boundarySupplementaryItems = supplementaryItems
             section.interGroupSpacing = mySection.spacing
             section.contentInsets = mySection.sectionInsets.getInsets()
-            if case .horizontal(let enableDynamicWidth,_) = scrollDirection {
-                section.orthogonalScrollingBehavior = enableDynamicWidth ? .continuous: .continuousGroupLeadingBoundary
+            if case .horizontal(let widthType,_) = scrollDirection {
+                switch widthType {
+                case .dynamicWidth:
+                    section.orthogonalScrollingBehavior = .continuous
+                case .fractionalWidth(_):
+                    section.orthogonalScrollingBehavior = .none
+                }
+            }
+            if let bgView = self.sectionsData[mySection]?.supplementaryElementModels.backgroundView {
+                let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: bgView.reusableId())
+                backgroundItem.contentInsets = bgView.insets.getInsets()
+                section.decorationItems = [
+                    backgroundItem
+                ]
             }
             
             return section
         }
-        
+        self.layout = layout
         return layout
     }
     
@@ -328,8 +354,13 @@ private extension DHCollectionView {
             case .left:
                 widthDimension = .estimated(cellEstimatedSize)
             }
-        case .horizontal(let enableDynamicWidth, _):
-            widthDimension = enableDynamicWidth ? .estimated(cellEstimatedSize): .fractionalWidth(1.0)
+        case .horizontal(let widthType, _):
+            switch widthType {
+            case .dynamicWidth:
+                widthDimension = .estimated(cellEstimatedSize)
+            case .fractionalWidth(_):
+                widthDimension = .fractionalWidth(1.0)
+            }
         }
         
         let itemSize = NSCollectionLayoutSize(
@@ -348,8 +379,13 @@ private extension DHCollectionView {
         switch scrollDirection {
         case .vertical(_):
             widthDimension = .fractionalWidth(1.0)
-        case .horizontal(let enableDynamicWidth, _):
-            widthDimension = enableDynamicWidth ? .estimated(cellEstimatedSize): .fractionalWidth(1.0)
+        case .horizontal(let widthType, _):
+            switch widthType {
+            case .dynamicWidth:
+                widthDimension = .estimated(cellEstimatedSize)
+            case .fractionalWidth(_):
+                widthDimension = .fractionalWidth(1.0)
+            }
         }
         
         let groupSize = NSCollectionLayoutSize(
@@ -359,11 +395,20 @@ private extension DHCollectionView {
         
         let group: NSCollectionLayoutGroup
         switch scrollDirection {
-        case .horizontal(_, let columns):
-            group = .vertical(
-                layoutSize: groupSize,
-                subitems: (0..<columns).map{_ in item}
-            )
+        case .horizontal(let widthType, let columns):
+            switch widthType {
+            case .dynamicWidth:
+                group = .vertical(
+                    layoutSize: groupSize,
+                    subitems: (0..<columns).map{_ in item}
+                )
+            case .fractionalWidth(let fractions):
+                group = .horizontal(
+                    layoutSize: groupSize,
+                    subitem: item,
+                    count: fractions
+                )
+            }
         case .vertical(let align):
             switch align {
             case .center(let columns):

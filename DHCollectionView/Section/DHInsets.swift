@@ -1,5 +1,5 @@
 //
-//  DHSectionInsets.swift
+//  DHInsets.swift
 //  DHCollectionView
 //
 //  Created by Zhora Agadzhanyan on 08.10.2023.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-public struct DHSectionInsets: Hashable {
-    public static let zero: DHSectionInsets = DHSectionInsets()
+public struct DHInsets: Hashable {
+    public static let zero: DHInsets = DHInsets()
     
     private var top: CGFloat
     private var left: CGFloat
